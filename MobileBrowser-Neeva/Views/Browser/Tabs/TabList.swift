@@ -33,12 +33,7 @@ struct TabList: View {
                     
                     ForEach(self.webBrowserState.webpages, id: \.self) { tab in
                         
-                        Button(tab.url?.host ?? "unkown host") {
-                            self.webBrowserState.active_webpage = tab
-                            withAnimation() {
-                                self.show_active = true
-                            }
-                        }
+                        TabItem(webBrowserState: self.webBrowserState, show_active: self.$show_active, webpage: tab)
                     }
                 }
                 .padding(.top, 30)
@@ -59,6 +54,14 @@ struct TabList: View {
                     Spacer()
                     
                     Button(action: {
+                        
+                        if self.webBrowserState.active_webpage == nil {
+                            if self.webBrowserState.webpages.isEmpty {
+                                self.webBrowserState.createWebpage(withRequest: URLRequest(url: URL(string: "https://www.google.com")!))
+                            } else {
+                                self.webBrowserState.active_webpage = self.webBrowserState.webpages.first!
+                            }
+                        }
                         
                         withAnimation() {
                             self.show_active = true
