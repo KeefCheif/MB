@@ -10,17 +10,17 @@ import WebKit
 
 struct Webpage: Hashable {
     var id: String = UUID().uuidString
-    var webpage: WKWebView
+    var webpage: WKWebView?
+    var url: String = ""
+    var host: String = ""
 }
 
 // - - - - - - - - - - WebBrowser Coordinator - - - - - - - - - - //
 
 class WebBrowserState: NSObject, WKNavigationDelegate, ObservableObject {
     
-    
-    @Published var host: String = ""
     @Published var webpages: [Webpage] = [Webpage]()
-    @Published var active_webpage: Webpage?
+    @Published var active_webpage: Webpage = Webpage()
     @Published var tabThumbs: [String: Image] = [String: Image]()
     
     override init() {
@@ -55,9 +55,25 @@ class WebBrowserState: NSObject, WKNavigationDelegate, ObservableObject {
     }
     
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        if webView == self.active_webpage?.webpage {
-            self.host = webView.url?.host ?? ""
+        if webView == self.active_webpage.webpage {
+            
+            let url: String = webView.url?.absoluteString ?? "unknown url"
+            let host: String = webView.url?.host ?? "unknown host"
+            
+            self.active_webpage.url = url
+            self.active_webpage.host = host
+            
+            for i in 0..<self.webpages.count {
+                if self.webpages[i].id == self.active_webpage.id {
+                    self.webpages[i].url = url
+                    self.webpages[i].host = host
+                }
+            }
         }
+    }
+    
+    func loadSearch() {
+        
     }
 }
 
@@ -74,12 +90,12 @@ struct WebBrowser: UIViewRepresentable {
     
     func updateUIView(_ uiView: UIViewType, context: Context) {
         
-        guard let webpage = self.browserState.active_webpage else { return }
+        guard let webpage = self.browserState.active_webpage.webpage else { return }
         
         
         uiView.subviews.forEach { $0.removeFromSuperview() }
         
-        webpage.webpage.frame = CGRect(origin: .zero, size: UIScreen.main.bounds.size)
-        uiView.addSubview(webpage.webpage)
+        webpage.frame = CGRect(origin: .zero, size: UIScreen.main.bounds.size)
+        uiView.addSubview(webpage)
     }
 }

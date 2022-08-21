@@ -9,11 +9,12 @@ import SwiftUI
 
 struct TabList: View {
     
-    @ObservedObject var webBrowserState: WebBrowserState
-    @Binding var show_active: Bool
     @Environment(\.colorScheme) var colorScheme
     
-    private let list_columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 20), count: 2)
+    @ObservedObject var webBrowserState: WebBrowserState
+    @Binding var show_active: Bool
+    
+    private let list_columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 0), count: 2)
     
     var body: some View {
 
@@ -34,47 +35,15 @@ struct TabList: View {
                     ForEach(self.webBrowserState.webpages, id: \.self) { tab in
                         
                         TabItem(webBrowserState: self.webBrowserState, show_active: self.$show_active, webpage: tab)
+                            .padding([.vertical], 20)
                     }
                 }
-                .padding(.top, 30)
+                .padding(.top, 20)
                 .padding()
             }
             .safeAreaInset(edge: .bottom) {
                 
-                HStack {
-                    
-                    Button(action: {
-                        self.webBrowserState.createWebpage(withRequest: URLRequest(url: URL(string: "https://www.google.com")!))
-                        self.show_active = true
-                    }, label: {
-                        Image(systemName: "plus")
-                            .toolbarIcon(nil)
-                    })
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        
-                        if self.webBrowserState.active_webpage == nil {
-                            if self.webBrowserState.webpages.isEmpty {
-                                self.webBrowserState.createWebpage(withRequest: URLRequest(url: URL(string: "https://www.google.com")!))
-                            } else {
-                                self.webBrowserState.active_webpage = self.webBrowserState.webpages.first!
-                            }
-                        }
-                        
-                        withAnimation() {
-                            self.show_active = true
-                        }
-                        
-                    }, label: {
-                        Text("Done")
-                            .fontWeight(.semibold)
-                    })
-                }
-                .padding(20)
-                .padding(.bottom, 20)
-                .background(self.colorScheme == .dark ? .black : .white)
+                TabListToolbar(webBrowserState: self.webBrowserState, show_active: self.$show_active)
             }
         }
     }
