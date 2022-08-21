@@ -33,7 +33,7 @@ struct TabItem: View {
                         .cornerRadius(10)
                 }
                 
-                Text(self.webpage.webpage.url?.host ?? "unknown host")
+                Text(self.webpage.host)
                     .font(.caption)
                     .fontWeight(.bold)
                     .foregroundColor(.primary)
@@ -73,8 +73,8 @@ struct TabItem: View {
             return self.webpage.id == tab.id
         }
         
-        if self.webpage.id == self.webBrowserState.active_webpage?.id {
-            self.webBrowserState.active_webpage = nil
+        if self.webpage.id == self.webBrowserState.active_webpage.id {
+            self.webBrowserState.active_webpage.webpage = nil
         }
     }
 }
