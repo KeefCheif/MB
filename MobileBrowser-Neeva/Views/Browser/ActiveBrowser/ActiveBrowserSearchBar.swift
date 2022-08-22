@@ -23,6 +23,14 @@ struct ActiveBrowserSearchBar: View {
             // - - - Loading Icon - - - //
             if self.webBrowserState.active_webpage.isLoading {
                 GenericLoadingView(size: 1)
+            } else {
+                
+                Button(action: {
+                    self.webBrowserState.handleReload()
+                }, label: {
+                    Image(systemName: "arrow.clockwise")
+                        .resizable().scaledToFit().frame(width: 20)
+                })
             }
             
             // - - - Search Bar - - - //

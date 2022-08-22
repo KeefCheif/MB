@@ -135,6 +135,16 @@ class WebBrowserState: NSObject, WKNavigationDelegate, ObservableObject {
     }
     
     
+    // - - - - - Pre Reload - - - - - //
+    func handleReload() {
+        
+        guard self.active_webpage.webpage != nil else { return }
+        
+        self.active_webpage.webpage!.reload()
+        self.overrideTabHistoryUpdate = true
+    }
+    
+    
     // - - - - - Pre WKWebView Load Request - - - - - //
     func refineSearch() {
         

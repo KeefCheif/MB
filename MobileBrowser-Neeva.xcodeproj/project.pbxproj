@@ -161,8 +161,8 @@
 			isa = PBXGroup;
 			children = (
 				D0CB3B9728B1568C004D17A0 /* ActiveBrowser.swift */,
-				D0CB3B9A28B15AC4004D17A0 /* ActiveBrowserToolbar.swift */,
 				D0CB3B9E28B1CDE7004D17A0 /* ActiveBrowserSearchBar.swift */,
+				D0CB3B9A28B15AC4004D17A0 /* ActiveBrowserToolbar.swift */,
 			);
 			path = ActiveBrowser;
 			sourceTree = "<group>";

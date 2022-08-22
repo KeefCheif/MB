@@ -10,6 +10,8 @@ import WebKit
 
 struct ActiveBrowserToolbar: View {
     
+    @Environment(\.colorScheme) var colorScheme
+    
     @ObservedObject var webBrowserState: WebBrowserState
     @Binding var show_active: Bool
     
@@ -25,6 +27,7 @@ struct ActiveBrowserToolbar: View {
             }, label: {
                 Image(systemName: "arrow.left")
                     .toolbarIcon(nil)
+                    .foregroundColor(self.colorScheme == .dark ? .white : .black)
             })
             
             // - - - Forward Button - - - //
@@ -35,6 +38,7 @@ struct ActiveBrowserToolbar: View {
             }, label: {
                 Image(systemName: "arrow.right")
                     .toolbarIcon(nil)
+                    .foregroundColor(self.colorScheme == .dark ? .white : .black)
             })
             
             Spacer()
@@ -72,6 +76,7 @@ struct ActiveBrowserToolbar: View {
             }, label: {
                 Image(systemName: "square.on.square")
                     .toolbarIcon(nil)
+                    .foregroundColor(self.colorScheme == .dark ? .white : .black)
             })
         }
         .padding([.horizontal], 20)
