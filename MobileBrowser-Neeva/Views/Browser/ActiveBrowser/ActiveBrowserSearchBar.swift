@@ -12,6 +12,10 @@ struct ActiveBrowserSearchBar: View {
     @ObservedObject var webBrowserState: WebBrowserState
     @FocusState var focused: Bool
     
+    private var point: Int {
+        return self.webBrowserState.active_webpage.tabHistory.point
+    }
+    
     var body: some View {
         
         HStack {
@@ -20,13 +24,15 @@ struct ActiveBrowserSearchBar: View {
                 GenericLoadingView(size: 1)
             }
             
-            TextField("website name", text: self.focused ? self.$webBrowserState.active_webpage.search : self.$webBrowserState.active_webpage.host)
-                .focused(self.$focused)
-                .textInputAutocapitalization(.never)
+            if self.point >= 0 {
+                TextField("website name", text: self.focused ? self.$webBrowserState.active_webpage.search : self.$webBrowserState.active_webpage.tabHistory.hosts[self.point])
+                    .focused(self.$focused)
+                    .textInputAutocapitalization(.never)
+            }
             
             Button(action: {
                 
-                if !self.webBrowserState.active_webpage.search.isEmpty {
+                if self.point >= 0 && !self.webBrowserState.active_webpage.tabHistory.searches[self.point].isEmpty {
                     
                     self.webBrowserState.active_webpage.show_errorPage = false
                     

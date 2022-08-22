@@ -16,8 +16,11 @@ class WebBrowserState: NSObject, WKNavigationDelegate, ObservableObject {
     @Published var active_webpage: Webpage = Webpage()
     @Published var tabThumbs: [String: Image] = [String: Image]()
     
-    private let BASE_GOOGLE: String = "https://www.google.com"
+    private let BASE_GOOGLE: String = "https://www.google.com/"
     private let SEARCH_GOOGLE: String = "/search?q="
+    
+    private var google_search: String?
+    private var overrideTabHistoryUpdate: Bool = false
     
     override init() {
         super.init()
@@ -47,6 +50,9 @@ class WebBrowserState: NSObject, WKNavigationDelegate, ObservableObject {
         self.webpages.append(new_webpage)
         self.active_webpage = new_webpage
         
+        let host: String = webpage.url?.host ?? "unknown host"
+        self.active_webpage.tabHistory = TabHistory(point: 0, searches: [BASE_GOOGLE], hosts: [host], urls: [BASE_GOOGLE])
+        
         return webpage
     }
     
@@ -55,68 +61,102 @@ class WebBrowserState: NSObject, WKNavigationDelegate, ObservableObject {
     }
     
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        if webView == self.active_webpage.webpage {
+        
+        if webView == self.active_webpage.webpage && !self.overrideTabHistoryUpdate {
             
             let url: String = webView.url?.absoluteString ?? "unknown url"
             let host: String = webView.url?.host ?? "unknown host"
             
-            if self.active_webpage.urlSearch {
-                self.active_webpage.host = host
-                self.active_webpage.search = url
+            self.handleNewTabHistory()
+            
+            if let google_search = self.google_search {
+                self.active_webpage.tabHistory.searches.append(google_search)
+                self.active_webpage.tabHistory.hosts.append(google_search)
+            } else {
+                self.active_webpage.tabHistory.searches.append(url.count > 50 ? host : url)
+                self.active_webpage.tabHistory.hosts.append(host)
             }
             
-            // If the user goes back or forward (via the arrows) to a google search, then the search/url will be the entire google search url
-            // Just want the actual search for example: www.google.com/search?q=Pokemon&ea=lsjfkljhlkdjfnvkjsdf should just be Pokemon
-                // Potential solution... keep track of the searches/urls that have been passed so when we go back we can just move around that array
+            self.active_webpage.tabHistory.urls.append(url)
+            self.active_webpage.tabHistory.point += 1
+            self.active_webpage.search = self.active_webpage.tabHistory.searches[self.active_webpage.tabHistory.point]
             
-            self.syncTabChanges()
+            self.syncTabChanges()   // might be able to move this to when tabs are switched
         }
-        self.active_webpage.urlSearch = true
+        
+        self.google_search = nil
+        self.overrideTabHistoryUpdate = false
+        self.active_webpage.isLoading = false
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.active_webpage.isLoading = false
     }
     
+    func handleNewTabHistory() {
+        
+        guard self.active_webpage.tabHistory.point < self.active_webpage.tabHistory.searches.count - 1 else { return }
+        guard self.active_webpage.tabHistory.searches.count == self.active_webpage.tabHistory.urls.count else { return }
+        guard self.active_webpage.tabHistory.searches.count == self.active_webpage.tabHistory.hosts.count else { return }
+        guard self.active_webpage.tabHistory.point < self.active_webpage.tabHistory.searches.count else { return }
+        guard self.active_webpage.tabHistory.point >= -1 else { return }
+        
+        let start: Int = self.active_webpage.tabHistory.point + 1
+        let end: Int = self.active_webpage.tabHistory.searches.count
+        
+        self.active_webpage.tabHistory.searches.removeSubrange(start..<end)
+        self.active_webpage.tabHistory.hosts.removeSubrange(start..<end)
+        self.active_webpage.tabHistory.urls.removeSubrange(start..<end)
+    }
+    
+    func handleBackwardNavigation() {
+        guard self.active_webpage.tabHistory.point > 0 else { return }
+        self.active_webpage.tabHistory.point -= 1
+        self.active_webpage.search = self.active_webpage.tabHistory.searches[self.active_webpage.tabHistory.point]
+        self.overrideTabHistoryUpdate = true
+    }
+    
+    func handleForwardNavigation() {
+        guard self.active_webpage.tabHistory.point < self.active_webpage.tabHistory.searches.count - 1 else { return }
+        self.active_webpage.tabHistory.point += 1
+        self.active_webpage.search = self.active_webpage.tabHistory.searches[self.active_webpage.tabHistory.point]
+        self.overrideTabHistoryUpdate = true
+    }
+    
     func refineSearch() {
+        
+        let search: String = self.active_webpage.search
         
         self.active_webpage.isLoading = true
         var urlSearch: URL?
         
-        // Check if the search can be made into a url
-        if URL(string: self.active_webpage.search) != nil {
+        if URL(string: search) != nil {
             
-            if self.active_webpage.search.contains(".com") {
+            if search.contains(".com") {
                 
                 // User is trying to open a website, so make sure it's correctly formatted
-                urlSearch = URL(string: WebBrowserState.prepareWebsiteSearch(self.active_webpage.search))
-                self.active_webpage.urlSearch = true
+                urlSearch = URL(string: WebBrowserState.prepareWebsiteSearch(search))
                 
-            } else if UIApplication.shared.canOpenURL(URL(string: self.active_webpage.search)!) {
+            } else if UIApplication.shared.canOpenURL(URL(string: search)!) {
                 
-                // Could be a non .com site
-                urlSearch = URL(string: self.active_webpage.search)
-                self.active_webpage.host = self.active_webpage.search
-                self.active_webpage.urlSearch = true    // Prevents the url shown to the user from being the entire google search url
+                // Could be a non .com site, so just try and load that
+                urlSearch = URL(string: search)
                 
             } else {
                 
-                // - - - Google Search - - - //
-                let googleSearch: String = WebBrowserState.prepareGoogleSearch(self.active_webpage.search)
-                urlSearch = URL(string: BASE_GOOGLE + SEARCH_GOOGLE + googleSearch)
-                self.active_webpage.urlSearch = false
+                // - - - Default to Google Search - - - //
+                self.google_search = search
+                urlSearch = URL(string: BASE_GOOGLE + SEARCH_GOOGLE + WebBrowserState.prepareGoogleSearch(search))
             }
             
         } else {
             
-            // - - - Google Search - - - //
-            let googleSearch: String = WebBrowserState.prepareGoogleSearch(self.active_webpage.search)
-            urlSearch = URL(string: BASE_GOOGLE + SEARCH_GOOGLE + googleSearch)
-            self.active_webpage.host = self.active_webpage.search
-            self.active_webpage.urlSearch = false       // Prevents the url shown to the user from being the entire google search url
+            // - - - Default to Google Search - - - //
+            self.google_search = search
+            urlSearch = URL(string: BASE_GOOGLE + SEARCH_GOOGLE + WebBrowserState.prepareGoogleSearch(search))
         }
         
-        // - - - Load Request (if url is valid) - - - //
+        // - - - Load Request (if url is valid & not nil) - - - //
         if let urlSearch = urlSearch, let _ = self.active_webpage.webpage {
             
             if UIApplication.shared.canOpenURL(urlSearch) {

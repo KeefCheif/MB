@@ -32,7 +32,7 @@ struct ActiveBrowser: View {
                     Text("The website could not be reached.")
                         .fontWeight(.semibold)
                         .font(.title)
-                    Text("Make sure '\(self.webBrowserState.active_webpage.search)' is formatted correctly")
+                    Text("Make sure '\(self.webBrowserState.active_webpage.tabHistory.searches[self.webBrowserState.active_webpage.tabHistory.point])' is formatted correctly")
                         .font(.caption)
                     
                     Spacer()

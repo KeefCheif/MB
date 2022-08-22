@@ -33,11 +33,14 @@ struct TabItem: View {
                         .cornerRadius(10)
                 }
                 
-                Text(self.webpage.show_errorPage ? "Invalid Site" : self.webpage.host)
-                    .font(.caption)
-                    .fontWeight(.bold)
-                    .foregroundColor(.primary)
-                    .lineLimit(1)
+                if self.webpage.tabHistory.point >= 0 && self.webpage.tabHistory.point < self.webpage.tabHistory.hosts.count {
+                    Text(self.webpage.show_errorPage ? "Invalid Site" : self.webpage.tabHistory.hosts[self.webpage.tabHistory.point])
+                        .font(.caption)
+                        .fontWeight(.bold)
+                        .foregroundColor(.primary)
+                        .lineLimit(1)
+                }
+
             }
             .contentShape(Rectangle())
             .onTapGesture {
