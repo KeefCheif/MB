@@ -18,6 +18,7 @@ struct ActiveBrowserSearchBar: View {
             
             TextField("website name", text: self.focused ? self.$webBrowserState.active_webpage.search : self.$webBrowserState.active_webpage.host)
                 .focused(self.$focused)
+                .textInputAutocapitalization(.never)
             
             Button(action: {
                 
