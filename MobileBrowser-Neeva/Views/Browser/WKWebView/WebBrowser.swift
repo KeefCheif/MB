@@ -50,6 +50,10 @@ class WebBrowserState: NSObject, WKNavigationDelegate, ObservableObject {
         return webpage
     }
     
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        self.active_webpage.isLoading = true
+    }
+    
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         if webView == self.active_webpage.webpage {
             
@@ -70,8 +74,13 @@ class WebBrowserState: NSObject, WKNavigationDelegate, ObservableObject {
         self.active_webpage.urlSearch = true
     }
     
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        self.active_webpage.isLoading = false
+    }
+    
     func refineSearch() {
         
+        self.active_webpage.isLoading = true
         var urlSearch: URL?
         
         // Check if the search can be made into a url
@@ -115,11 +124,13 @@ class WebBrowserState: NSObject, WKNavigationDelegate, ObservableObject {
             } else {
                 self.active_webpage.show_errorPage = true
                 self.syncTabChanges()
+                self.active_webpage.isLoading = false
             }
             
         } else {
             self.active_webpage.show_errorPage = true
             self.syncTabChanges()
+            self.active_webpage.isLoading = false
         }
     }
     
