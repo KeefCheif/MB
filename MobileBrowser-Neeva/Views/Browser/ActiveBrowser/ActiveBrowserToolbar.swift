@@ -20,6 +20,7 @@ struct ActiveBrowserToolbar: View {
             
             Button(action: {
                 self.webBrowserState.active_webpage.show_errorPage = false
+                self.webBrowserState.handleBackwardNavigation()
                 self.webBrowserState.active_webpage.webpage?.goBack()
             }, label: {
                 Image(systemName: "arrow.left")
@@ -28,6 +29,7 @@ struct ActiveBrowserToolbar: View {
             
             Button(action: {
                 self.webBrowserState.active_webpage.show_errorPage = false
+                self.webBrowserState.handleForwardNavigation()
                 self.webBrowserState.active_webpage.webpage?.goForward()
             }, label: {
                 Image(systemName: "arrow.right")
