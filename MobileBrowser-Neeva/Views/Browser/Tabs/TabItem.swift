@@ -33,7 +33,7 @@ struct TabItem: View {
                         .cornerRadius(10)
                 }
                 
-                Text(self.webpage.host)
+                Text(self.webpage.show_errorPage ? "Invalid Site" : self.webpage.host)
                     .font(.caption)
                     .fontWeight(.bold)
                     .foregroundColor(.primary)

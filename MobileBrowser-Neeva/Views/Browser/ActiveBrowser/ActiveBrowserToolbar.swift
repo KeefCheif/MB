@@ -19,6 +19,7 @@ struct ActiveBrowserToolbar: View {
         HStack(spacing: 40) {
             
             Button(action: {
+                self.webBrowserState.active_webpage.show_errorPage = false
                 self.webBrowserState.active_webpage.webpage?.goBack()
             }, label: {
                 Image(systemName: "arrow.left")
@@ -26,6 +27,7 @@ struct ActiveBrowserToolbar: View {
             })
             
             Button(action: {
+                self.webBrowserState.active_webpage.show_errorPage = false
                 self.webBrowserState.active_webpage.webpage?.goForward()
             }, label: {
                 Image(systemName: "arrow.right")
@@ -35,7 +37,7 @@ struct ActiveBrowserToolbar: View {
             Spacer()
             
             Button(action: {
-                
+                self.webBrowserState.active_webpage.show_errorPage = false
                 self.show_history = true
                 
             }, label: {
@@ -48,10 +50,17 @@ struct ActiveBrowserToolbar: View {
                 Task {
                     do {
                         
-                        let thumbnail = try await self.webBrowserState.active_webpage.webpage?.takeSnapshot(configuration: nil)
-                        
-                        if let thumbnail = thumbnail {
-                            self.webBrowserState.tabThumbs[self.webBrowserState.active_webpage.id] = Image(uiImage: thumbnail)
+                        if self.webBrowserState.active_webpage.show_errorPage {
+                            
+                            self.webBrowserState.tabThumbs[self.webBrowserState.active_webpage.id] = nil
+                            
+                        } else {
+                            
+                            let thumbnail = try await self.webBrowserState.active_webpage.webpage?.takeSnapshot(configuration: nil)
+                            
+                            if let thumbnail = thumbnail {
+                                self.webBrowserState.tabThumbs[self.webBrowserState.active_webpage.id] = Image(uiImage: thumbnail)
+                            }
                         }
                         
                     } catch {

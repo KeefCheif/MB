@@ -16,14 +16,19 @@ struct ActiveBrowserSearchBar: View {
         
         HStack {
             
-            
-            TextField("website name", text: self.focused ? self.$webBrowserState.active_webpage.url : self.$webBrowserState.active_webpage.host)
+            TextField("website name", text: self.focused ? self.$webBrowserState.active_webpage.search : self.$webBrowserState.active_webpage.host)
                 .focused(self.$focused)
             
             Button(action: {
                 
-                //Need to do some string formatting here
-                self.webBrowserState.active_webpage.webpage!.load(URLRequest(url: URL(string: self.webBrowserState.active_webpage.url)!))
+                if !self.webBrowserState.active_webpage.search.isEmpty {
+                    
+                    self.webBrowserState.active_webpage.show_errorPage = false
+                    
+                    // Attempt to load request based on the users search input
+                    self.webBrowserState.refineSearch()
+                }
+    
             }, label: {
                 Image(systemName: "magnifyingglass")
                     .resizable()
