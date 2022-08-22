@@ -21,18 +21,24 @@ struct TabItem: View {
             
             VStack {
                 
+                // - - - - - Tab Thumbnail - - - - - //
                 if let image = self.webBrowserState.tabThumbs[self.webpage.id] {
+                    
+                    // Thumbnail
                     image
                         .resizable()
                         .frame(width: UIScreen.main.bounds.width/3, height: UIScreen.main.bounds.height/4)
                         .cornerRadius(10)
                 } else {
+                    
+                    // Default image if nil
                     Image("beluga")
                         .resizable()
                         .frame(width: UIScreen.main.bounds.width/3, height: UIScreen.main.bounds.height/4, alignment: .center)
                         .cornerRadius(10)
                 }
                 
+                // - - - - - Host Name - - - - - //
                 if self.webpage.tabHistory.point >= 0 && self.webpage.tabHistory.point < self.webpage.tabHistory.hosts.count {
                     Text(self.webpage.show_errorPage ? "Invalid Site" : self.webpage.tabHistory.hosts[self.webpage.tabHistory.point])
                         .font(.caption)
@@ -48,6 +54,7 @@ struct TabItem: View {
                 self.show_active = true
             }
             
+            // - - - - - Delete Button - - - - - //
             VStack {
                 
                 HStack {
@@ -76,6 +83,7 @@ struct TabItem: View {
             return self.webpage.id == tab.id
         }
         
+        // Set active page to nil if active page was deleted
         if self.webpage.id == self.webBrowserState.active_webpage.id {
             self.webBrowserState.active_webpage.webpage = nil
         }

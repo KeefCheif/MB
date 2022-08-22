@@ -7,59 +7,23 @@
 
 import WebKit
 
+// This is the model structure for the WebBrowserState class
 struct Webpage: Hashable {
+    
     var id: String = UUID().uuidString
-    var webpage: WKWebView?
-    var search: String = ""
+    var isLoading: Bool = false                     // Presents loading icon
     
-    var show_errorPage: Bool = false
+    var webpage: WKWebView?                         // The actual WKWebView is stored to restore when switching tabs
     
-    var isLoading: Bool = false
-
+    var search: String = ""                         // Searches are done from here but stored in tabHistory
+    var show_errorPage: Bool = false                // Presents invalid page/"site could not be found"
     var tabHistory: TabHistory = TabHistory()
 }
 
+// This model is used to track user searches as well as the hosts and urls of sites they navigate to
 struct TabHistory: Hashable {
     var point: Int = -1
     var searches: [String] = [String]()
     var hosts: [String] = [String]()
-    var urls: [String] = [String]()
+    var urls: [String] = [String]()                 // Currently unused
 }
-
-/*
-Scenarios:
-
-    User Makes a valid search:
- 
-    - Remove all elements in the urls & history arrays past the point value
-        
-        Case #1: is google search
- 
-            - Append the google search to the urls & history array
- 
-        Case #2: is website search
- 
-            - Append the website host name to the hosts array and url to the urls array
- 
-    
-    User navigates to a new page via the web view:
-    
-    - Remove all elements in the urls & history arrays past the point value
- 
-    - Append the website host name to the hosts array and url to the urls array
- 
- 
-    User navigates backwards:
- 
-    - decrement the point value
- 
- 
-    user navigates forwards:
- 
-    - increment the point value
- 
- 
-    user reloads:
-    
-    - Do nothing
-*/

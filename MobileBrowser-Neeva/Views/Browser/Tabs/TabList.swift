@@ -34,6 +34,7 @@ struct TabList: View {
                     
                     ForEach(self.webBrowserState.webpages, id: \.self) { tab in
                         
+                        // - - - Tab Item - - - //
                         TabItem(webBrowserState: self.webBrowserState, show_active: self.$show_active, webpage: tab)
                             .padding([.vertical], 20)
                     }
@@ -43,6 +44,7 @@ struct TabList: View {
             }
             .safeAreaInset(edge: .bottom) {
                 
+        // - - - - - Tab Toolbar - - - - - //
                 TabListToolbar(webBrowserState: self.webBrowserState, show_active: self.$show_active)
             }
         }

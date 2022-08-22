@@ -19,7 +19,9 @@ struct TabListToolbar: View {
         
         HStack {
             
+            // - - - - - New Tab Button - - - - - //
             Button(action: {
+                // Creates new tab & switches the it to the active tab and shows it
                 self.webBrowserState.createWebpage(withRequest: URLRequest(url: URL(string: "https://www.google.com")!))
                 self.show_active = true
             }, label: {
@@ -29,8 +31,10 @@ struct TabListToolbar: View {
             
             Spacer()
             
+            // - - - - - Return to active tab Button - - - - - //
             Button(action: {
                 
+                // If active tab was deleted (is nil) create a new one and make it the active tab
                 if self.webBrowserState.active_webpage.webpage == nil {
                     if self.webBrowserState.webpages.isEmpty {
                         self.webBrowserState.createWebpage(withRequest: URLRequest(url: URL(string: "https://www.google.com")!))
