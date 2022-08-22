@@ -27,6 +27,7 @@ struct TabListToolbar: View {
             }, label: {
                 Image(systemName: "plus")
                     .toolbarIcon(nil)
+                    .foregroundColor(self.colorScheme == .dark ? .white : .black)
             })
             
             Spacer()
