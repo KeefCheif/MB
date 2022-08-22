@@ -15,6 +15,8 @@ struct Webpage: Hashable {
     var urlSearch: Bool = true
     
     var show_errorPage: Bool = false
+    
+    var isLoading: Bool = false
 
     var tabHistory: TabHistory = TabHistory()
 }
