@@ -11,15 +11,15 @@ import WebKit
 struct ActiveBrowserToolbar: View {
     
     @ObservedObject var webBrowserState: WebBrowserState
-    @Binding var show_history: Bool
     @Binding var show_active: Bool
     
     var body: some View {
         
         HStack(spacing: 40) {
             
+            // - - - Back Button - - -//
             Button(action: {
-                self.webBrowserState.active_webpage.show_errorPage = false
+                self.webBrowserState.active_webpage.show_errorPage = false  // Always switch out of error page on navigating action
                 self.webBrowserState.handleBackwardNavigation()
                 self.webBrowserState.active_webpage.webpage?.goBack()
             }, label: {
@@ -27,6 +27,7 @@ struct ActiveBrowserToolbar: View {
                     .toolbarIcon(nil)
             })
             
+            // - - - Forward Button - - - //
             Button(action: {
                 self.webBrowserState.active_webpage.show_errorPage = false
                 self.webBrowserState.handleForwardNavigation()
@@ -38,26 +39,21 @@ struct ActiveBrowserToolbar: View {
             
             Spacer()
             
-            Button(action: {
-                self.webBrowserState.active_webpage.show_errorPage = false
-                self.show_history = true
-                
-            }, label: {
-                Image(systemName: "book")
-                    .toolbarIcon(nil)
-            })
-            
+            // - - - Switch Tabs Botton - - -//
             Button(action: {
                 
+                // Capture Screenshot for thumbnail before switching to tab selection list
                 Task {
                     do {
                         
                         if self.webBrowserState.active_webpage.show_errorPage {
                             
+                            // If error page use default image
                             self.webBrowserState.tabThumbs[self.webBrowserState.active_webpage.id] = nil
                             
                         } else {
                             
+                            // Capture and store screenshot
                             let thumbnail = try await self.webBrowserState.active_webpage.webpage?.takeSnapshot(configuration: nil)
                             
                             if let thumbnail = thumbnail {
@@ -67,9 +63,10 @@ struct ActiveBrowserToolbar: View {
                         
                     } catch {
                         print(error.localizedDescription)
+                        // Just log error and display default image on error
                     }
                     
-                    self.show_active = false
+                    self.show_active = false    // Switch to tab list
                 }
                 
             }, label: {
@@ -79,11 +76,5 @@ struct ActiveBrowserToolbar: View {
         }
         .padding([.horizontal], 20)
         .padding([.vertical], 10)
-    }
-}
-
-extension Image {
-    func toolbarIcon(_ size: CGFloat?) -> some View {
-        return self.resizable().scaledToFit().frame(width: size == nil ? 25 : size!).foregroundColor(.white)
     }
 }

@@ -20,21 +20,24 @@ struct ActiveBrowserSearchBar: View {
         
         HStack {
             
+            // - - - Loading Icon - - - //
             if self.webBrowserState.active_webpage.isLoading {
                 GenericLoadingView(size: 1)
             }
             
+            // - - - Search Bar - - - //
             if self.point >= 0 {
                 TextField("website name", text: self.focused ? self.$webBrowserState.active_webpage.search : self.$webBrowserState.active_webpage.tabHistory.hosts[self.point])
                     .focused(self.$focused)
-                    .textInputAutocapitalization(.never)
+                    .textInputAutocapitalization(.never)    // Prevents auto caps on strings like 'https'
             }
             
+            // - - - Submit Search Button - - - //
             Button(action: {
                 
                 if self.point >= 0 && !self.webBrowserState.active_webpage.tabHistory.searches[self.point].isEmpty {
                     
-                    self.webBrowserState.active_webpage.show_errorPage = false
+                    self.webBrowserState.active_webpage.show_errorPage = false      // Always remove error page on navigating action
                     
                     // Attempt to load request based on the users search input
                     self.webBrowserState.refineSearch()
