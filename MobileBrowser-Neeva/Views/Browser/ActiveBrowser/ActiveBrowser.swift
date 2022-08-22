@@ -21,23 +21,32 @@ struct ActiveBrowser: View {
             
         } else {
             
-            if self.webBrowserState.active_webpage.webpage != nil {
+            VStack {
                 
-                WebBrowser(browserState: self.webBrowserState)
-                    .clipped()
-                    .safeAreaInset(edge: .bottom) {
-                        
-                        VStack(spacing: 0) {
-                            
-                            ActiveBrowserSearchBar(webBrowserState: self.webBrowserState)
-                            
-                            ActiveBrowserToolbar(webBrowserState: self.webBrowserState, show_history: self.$show_history, show_active: self.$show_active)
-                        }
-                    }
+                if self.webBrowserState.active_webpage.webpage != nil && !self.webBrowserState.active_webpage.show_errorPage {
+                    WebBrowser(browserState: self.webBrowserState)
+                        .clipped()
+                } else {
+                    Spacer()
+                    
+                    Text("The website could not be reached.")
+                        .fontWeight(.semibold)
+                        .font(.title)
+                    Text("Make sure '\(self.webBrowserState.active_webpage.search)' is formatted correctly")
+                        .font(.caption)
+                    
+                    Spacer()
+                }
                 
-            } else {
+            }
+            .safeAreaInset(edge: .bottom) {
                 
-                Text("No Webpage opened yet")
+                VStack(spacing: 0) {
+                    
+                    ActiveBrowserSearchBar(webBrowserState: self.webBrowserState)
+                    
+                    ActiveBrowserToolbar(webBrowserState: self.webBrowserState, show_history: self.$show_history, show_active: self.$show_active)
+                }
             }
         }
     }

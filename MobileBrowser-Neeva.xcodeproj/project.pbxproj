@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D078801328B3F0CA0095BA9C /* Webpage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D078801228B3F0CA0095BA9C /* Webpage.swift */; };
+		D078801528B3F1150095BA9C /* WebBrowserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D078801428B3F1150095BA9C /* WebBrowserError.swift */; };
 		D0CB3B8E28B14423004D17A0 /* TabList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB3B8D28B14423004D17A0 /* TabList.swift */; };
 		D0CB3B9028B145D0004D17A0 /* WebBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB3B8F28B145D0004D17A0 /* WebBrowser.swift */; };
 		D0CB3B9328B1460D004D17A0 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB3B9228B1460D004D17A0 /* Tab.swift */; };
@@ -45,6 +47,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D078801228B3F0CA0095BA9C /* Webpage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Webpage.swift; sourceTree = "<group>"; };
+		D078801428B3F1150095BA9C /* WebBrowserError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserError.swift; sourceTree = "<group>"; };
 		D0CB3B8D28B14423004D17A0 /* TabList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabList.swift; sourceTree = "<group>"; };
 		D0CB3B8F28B145D0004D17A0 /* WebBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowser.swift; sourceTree = "<group>"; };
 		D0CB3B9228B1460D004D17A0 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
@@ -102,12 +106,21 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		D078801128B3F09E0095BA9C /* WKWebView */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB3B8F28B145D0004D17A0 /* WebBrowser.swift */,
+				D078801428B3F1150095BA9C /* WebBrowserError.swift */,
+			);
+			path = WKWebView;
+			sourceTree = "<group>";
+		};
 		D0B2E99E28B05920007860B6 /* Browser */ = {
 			isa = PBXGroup;
 			children = (
+				D078801128B3F09E0095BA9C /* WKWebView */,
 				D0CB3B9928B15AAA004D17A0 /* ActiveBrowser */,
 				D0CB3B8C28B14400004D17A0 /* Tabs */,
-				D0CB3B8F28B145D0004D17A0 /* WebBrowser.swift */,
 			);
 			path = Browser;
 			sourceTree = "<group>";
@@ -126,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				D0CB3B9228B1460D004D17A0 /* Tab.swift */,
+				D078801228B3F0CA0095BA9C /* Webpage.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -331,10 +345,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0CB3B9B28B15AC4004D17A0 /* ActiveBrowserToolbar.swift in Sources */,
+				D078801528B3F1150095BA9C /* WebBrowserError.swift in Sources */,
 				D0CB3B8E28B14423004D17A0 /* TabList.swift in Sources */,
 				D0CB3B9F28B1CDE7004D17A0 /* ActiveBrowserSearchBar.swift in Sources */,
 				D0E187E728AEEDA400490DD4 /* MobileBrowser_Neeva.xcdatamodeld in Sources */,
 				D0E187E428AEEDA400490DD4 /* Persistence.swift in Sources */,
+				D078801328B3F0CA0095BA9C /* Webpage.swift in Sources */,
 				D0CB3BA128B1D85C004D17A0 /* TabListToolbar.swift in Sources */,
 				D0E187DD28AEEDA300490DD4 /* ContentView.swift in Sources */,
 				D0CB3B9028B145D0004D17A0 /* WebBrowser.swift in Sources */,
