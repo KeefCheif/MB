@@ -31,4 +31,20 @@ Installing and Running:
 
 - Tab Thumbnail Pictures -
 
-  The Tab thumbnails are captured via a screencapture (provided by the WKNavigationDelegate protocol) right before the Tab View List is presented. The screencaptures are stored in a dictionary in the WebBrowserState class which is passed as an ovserved object to the TabList View. I decided to present the tab thumbnails as pictures/Images rather than actual live websites because rendering multiple live websites in the TabList view prooved to utilize a lot of processing power. The structure of my app however would not need very much since the WebBrowserState class is designed such that it could manage multiple active browsers at once. This is because each WKWebView in the WebBrowserState class 
+  The Tab thumbnails are captured via a screencapture (provided by the WKNavigationDelegate protocol) right before the Tab View List is presented. The screencaptures are stored in a dictionary in the WebBrowserState class which is passed as an ovserved object to the TabList View. I decided to present the tab thumbnails as pictures/Images rather than actual live websites because rendering multiple live websites in the TabList view prooved to utilize a lot of processing power. The structure of my app could support presenting multiple live WKWebviews since the WebBrowserState class is designed such that it could manage multiple active browsers at once. This is because each WKWebView in the WebBrowserState class is stored in an array of value type structs such that each posses the necessary information to accuralty call WKNavigationDelegate methods.
+  
+  
+  
+- UI & Usability - 
+
+  I dedicated a lot of time to improve the usability my mobile browser. The most notable usability feature, I think, is the versatility of the search bar. The search bar is designed so any .com search is garunteed to have https://www. at the beginning of it, and any search that does not appear to be a valid url is sent as a google search request with the url: https://www.google.com/search?q=%s. One shortcoming here is that I did not have the time correct google searches with special characters such as ^ & * $ to name a few. Entering any of these characters in the search bar while also not in url form will result in an error page being presented to the user. To fix this I would need to read through google's search documentation in order to correclty format searches with special characters.
+  
+  I also took particular care to ensure that value presented to the user in the search bar always reflects the url or search string (%s in the search url) that would take them to the webpage they are currenly one. This way reloading and pressing the submit search button essential function the same if the search value is not modified. 
+  
+  
+  Notable Bugs & Shortcomings:
+  
+  1)  Searching with special characters results in an error page being presented to the user
+  2)  The app does not reasonably support horizontal mode on mobile devices
+  3)  After selecting a tab from the TabList View the loading icon will persist until a navigating action is made (this might be a bug with WKWebView)
+  
