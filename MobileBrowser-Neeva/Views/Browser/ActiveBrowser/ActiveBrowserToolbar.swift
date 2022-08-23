@@ -21,9 +21,17 @@ struct ActiveBrowserToolbar: View {
             
             // - - - Back Button - - -//
             Button(action: {
-                self.webBrowserState.active_webpage.show_errorPage = false  // Always switch out of error page on navigating action
-                self.webBrowserState.handleBackwardNavigation()
-                self.webBrowserState.active_webpage.webpage?.goBack()
+                
+                if self.webBrowserState.active_webpage.show_errorPage {
+                    
+                    self.webBrowserState.active_webpage.show_errorPage = false  // Always switch out of error page on navigating action
+                    self.webBrowserState.handleReload()
+                    
+                } else {
+                    self.webBrowserState.handleBackwardNavigation()
+                    self.webBrowserState.active_webpage.webpage?.goBack()
+                }
+        
             }, label: {
                 Image(systemName: "arrow.left")
                     .toolbarIcon(nil)
@@ -32,9 +40,17 @@ struct ActiveBrowserToolbar: View {
             
             // - - - Forward Button - - - //
             Button(action: {
-                self.webBrowserState.active_webpage.show_errorPage = false
-                self.webBrowserState.handleForwardNavigation()
-                self.webBrowserState.active_webpage.webpage?.goForward()
+                
+                if self.webBrowserState.active_webpage.show_errorPage {
+                    
+                    self.webBrowserState.active_webpage.show_errorPage = false
+                    self.webBrowserState.handleReload()
+                    
+                } else {
+                    self.webBrowserState.handleForwardNavigation()
+                    self.webBrowserState.active_webpage.webpage?.goForward()
+                }
+                
             }, label: {
                 Image(systemName: "arrow.right")
                     .toolbarIcon(nil)

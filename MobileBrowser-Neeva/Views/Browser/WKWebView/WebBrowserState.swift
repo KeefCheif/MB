@@ -147,8 +147,9 @@ class WebBrowserState: NSObject, WKNavigationDelegate, ObservableObject {
         
         guard self.active_webpage.webpage != nil else { return }
         
+        self.overrideTabHistoryUpdate = true    // must come before the reload
+        self.active_webpage.search = self.active_webpage.tabHistory.searches[self.active_webpage.tabHistory.point]
         self.active_webpage.webpage!.reload()
-        self.overrideTabHistoryUpdate = true
     }
     
     
