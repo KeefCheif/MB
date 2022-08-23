@@ -4,6 +4,7 @@ Neeva 2023 Mobile Project: Mobile Browser
 This app is web browser for ios. The app uses the WKWebView component for basis of the browser and SwiftUI.  
 
 
+
 Installing and Running:
   
   Simply copy the repository to XCode or download the zip file from Github and open the MobileBrowser-Neeva.xcodeproj file in XCode.
@@ -13,8 +14,7 @@ Installing and Running:
   
  Added Features:
  
-  The primary extra feature that I chose to implement was the thumbnail picture for tabs feature
-  My secondary concern for this project was usability
+  The primary extra feature that I chose to implement was the thumbnail picture for tabs feature. My secondary concern for this project was usability
   _I will discuss my approach to each of these features/focuses in the next section_
   
   
