@@ -22,9 +22,6 @@
 		D0E187DB28AEEDA300490DD4 /* MobileBrowser_NeevaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E187DA28AEEDA300490DD4 /* MobileBrowser_NeevaApp.swift */; };
 		D0E187DF28AEEDA400490DD4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0E187DE28AEEDA400490DD4 /* Assets.xcassets */; };
 		D0E187E228AEEDA400490DD4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0E187E128AEEDA400490DD4 /* Preview Assets.xcassets */; };
-		D0E187F128AEEDA400490DD4 /* MobileBrowser_NeevaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E187F028AEEDA400490DD4 /* MobileBrowser_NeevaTests.swift */; };
-		D0E187FB28AEEDA400490DD4 /* MobileBrowser_NeevaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E187FA28AEEDA400490DD4 /* MobileBrowser_NeevaUITests.swift */; };
-		D0E187FD28AEEDA400490DD4 /* MobileBrowser_NeevaUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E187FC28AEEDA400490DD4 /* MobileBrowser_NeevaUITestsLaunchTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,10 +59,7 @@
 		D0E187DE28AEEDA400490DD4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D0E187E128AEEDA400490DD4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D0E187EC28AEEDA400490DD4 /* MobileBrowser-NeevaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MobileBrowser-NeevaTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D0E187F028AEEDA400490DD4 /* MobileBrowser_NeevaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileBrowser_NeevaTests.swift; sourceTree = "<group>"; };
 		D0E187F628AEEDA400490DD4 /* MobileBrowser-NeevaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MobileBrowser-NeevaUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D0E187FA28AEEDA400490DD4 /* MobileBrowser_NeevaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileBrowser_NeevaUITests.swift; sourceTree = "<group>"; };
-		D0E187FC28AEEDA400490DD4 /* MobileBrowser_NeevaUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileBrowser_NeevaUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,8 +165,6 @@
 			isa = PBXGroup;
 			children = (
 				D0E187D928AEEDA300490DD4 /* MobileBrowser-Neeva */,
-				D0E187EF28AEEDA400490DD4 /* MobileBrowser-NeevaTests */,
-				D0E187F928AEEDA400490DD4 /* MobileBrowser-NeevaUITests */,
 				D0E187D828AEEDA300490DD4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -205,23 +197,6 @@
 				D0E187E128AEEDA400490DD4 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		D0E187EF28AEEDA400490DD4 /* MobileBrowser-NeevaTests */ = {
-			isa = PBXGroup;
-			children = (
-				D0E187F028AEEDA400490DD4 /* MobileBrowser_NeevaTests.swift */,
-			);
-			path = "MobileBrowser-NeevaTests";
-			sourceTree = "<group>";
-		};
-		D0E187F928AEEDA400490DD4 /* MobileBrowser-NeevaUITests */ = {
-			isa = PBXGroup;
-			children = (
-				D0E187FA28AEEDA400490DD4 /* MobileBrowser_NeevaUITests.swift */,
-				D0E187FC28AEEDA400490DD4 /* MobileBrowser_NeevaUITestsLaunchTests.swift */,
-			);
-			path = "MobileBrowser-NeevaUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -374,7 +349,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0E187F128AEEDA400490DD4 /* MobileBrowser_NeevaTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -382,8 +356,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0E187FB28AEEDA400490DD4 /* MobileBrowser_NeevaUITests.swift in Sources */,
-				D0E187FD28AEEDA400490DD4 /* MobileBrowser_NeevaUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -110,6 +110,13 @@ class WebBrowserState: NSObject, WKNavigationDelegate, ObservableObject {
         self.active_webpage.isLoading = false
     }
     
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        //self.handleNavigation(webView)
+        self.active_webpage.show_errorPage = true
+        self.active_webpage.isLoading = false
+        self.syncTabChanges()
+    }
+    
     
     // - - - - - Pre Navigate Backwards Action - - - - - //
     func handleBackwardNavigation() {
@@ -184,6 +191,8 @@ class WebBrowserState: NSObject, WKNavigationDelegate, ObservableObject {
         // - - - Load Request (if url is valid & not nil) - - - //
         if let urlSearch = urlSearch, let _ = self.active_webpage.webpage {
             
+            self.active_webpage.webpage!.load(URLRequest(url: urlSearch))
+            /*
             if UIApplication.shared.canOpenURL(urlSearch) {
                 self.active_webpage.webpage!.load(URLRequest(url: urlSearch))
             } else {
@@ -193,7 +202,7 @@ class WebBrowserState: NSObject, WKNavigationDelegate, ObservableObject {
                 self.syncTabChanges()
                 self.active_webpage.isLoading = false
             }
-            
+            */
         } else {
             
             // Show error page
@@ -204,6 +213,43 @@ class WebBrowserState: NSObject, WKNavigationDelegate, ObservableObject {
     }
     
     // - - - - - - - Private Helper Functions - - - - - - - //
+    
+    
+    private func handleNavigation(_ webView: WKWebView) {
+        
+        // ~ Notice: overrideTabHistoryUpdate
+        // Only true when navigating forwards, backwards, and reloading
+        if webView == self.active_webpage.webpage && !self.overrideTabHistoryUpdate {
+            
+            let url: String = webView.url?.absoluteString ?? "unknown url"
+            let host: String = webView.url?.host ?? "unknown host"
+            
+            self.handleNewTabHistory()      // Removes all array values past the point value in the tabHistory
+            
+            if let google_search = self.google_search {
+                
+                // Google searches append the actual google search insead of the url because google search urls are very very long
+                self.active_webpage.tabHistory.searches.append(google_search)
+                self.active_webpage.tabHistory.hosts.append(google_search)
+            } else {
+                self.active_webpage.tabHistory.searches.append(url.count > 50 ? host : url)     // cut urls for the sake of UI
+                self.active_webpage.tabHistory.hosts.append(host)
+            }
+            
+            self.active_webpage.tabHistory.urls.append(url)
+            self.active_webpage.tabHistory.point += 1
+            
+            // Update the bound search value (it is displayed in the UI when the user taps on the search field)
+            self.active_webpage.search = self.active_webpage.tabHistory.searches[self.active_webpage.tabHistory.point]
+            
+            self.syncTabChanges()   // Keep the wepages array synced with the active webpage in case of tab switch
+        }
+        
+        // Reset flags for next navigation action
+        self.google_search = nil
+        self.overrideTabHistoryUpdate = false
+        self.active_webpage.isLoading = false
+    }
     
     private func syncTabChanges() {
         
